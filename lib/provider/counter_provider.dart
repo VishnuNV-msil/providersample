@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 class Counter with ChangeNotifier {
   int _count = 0;
 
-  int getCount() => _count;
+  int get Count => _count;
 
   void increment() {
     _count++;

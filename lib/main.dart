@@ -46,9 +46,6 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final counter = Provider.of<Counter>(context);
-    final themeNotifier = Provider.of<ThemeNotifier>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Providers Sample App'),
@@ -57,27 +54,36 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Counter: ${counter.getCount()}',
-              style: TextStyle(fontSize: 20),
+            Consumer<Counter>(builder: (context, counter, child) {
+              return Text(
+                '${counter.Count}',
+                style: Theme.of(context).textTheme.titleMedium,
+              );
+            }),
+            ElevatedButton(
+              onPressed: () {
+                Provider.of<Counter>(context, listen: false).increment();
+              },
+              child: Text('Increment',
+              style: Theme.of(context).textTheme.titleMedium,
+              ),
             ),
             ElevatedButton(
               onPressed: () {
-                counter.increment();
+                Provider.of<ThemeNotifier>(context, listen: false)
+                    .toggleTheme();
               },
-              child: Text('Increment'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                themeNotifier.toggleTheme();
-              },
-              child: Text('Toggle Theme'),
+              child: Text('Toggle Theme',
+              style: Theme.of(context).textTheme.titleMedium,
+              ),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, DetailScreen.routeName);
               },
-              child: Text('Next Screen'),
+              child: Text('Next Screen',
+              style: Theme.of(context).textTheme.titleMedium,
+              ),
             ),
           ],
         ),

@@ -10,8 +10,6 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final counter = Provider.of<Counter>(context);
-    final themeNotifier = Provider.of<ThemeNotifier>(context);
     final futureNotifier = Provider.of<FutureNotifier>(context);
     return Scaffold(
       appBar: AppBar(
@@ -27,21 +25,28 @@ class DetailScreen extends StatelessWidget {
                     'Data: ${futureNotifier.data}',
                     style: TextStyle(fontSize: 20),
                   ),
-            Text(
-              'User Clicked the "Increment" button this many times in home screen : ${counter.getCount()}',
-              style: TextStyle(fontSize: 16),
+            Consumer<Counter>(builder: (context, counter, child) {
+              return Text(
+                'User Clicked the "Increment" button this many times in home screen : ${counter.Count}',
+              style: Theme.of(context).textTheme.titleMedium,
+              );
+            }),
+            ElevatedButton(
+              onPressed: () {
+                Provider.of<ThemeNotifier>(context, listen: false)
+                    .toggleTheme();
+              },
+              child: Text('Toggle Theme',
+              style: Theme.of(context).textTheme.titleMedium,
+              ),
             ),
             ElevatedButton(
               onPressed: () {
-                themeNotifier.toggleTheme();
+                Provider.of<Counter>(context, listen: false).decrement();
               },
-              child: Text('Toggle Theme'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                counter.decrement();
-              },
-              child: Text('Decrement'),
+              child: Text('Decrement',
+              style: Theme.of(context).textTheme.titleMedium,
+              ),
             ),
           ],
         ),
